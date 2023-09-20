@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infrastructure/kubernetes/* #get all files inside this dir
+build:
+  # local:
+  #   push: false #donot push image everytime we create as this will create image everytime
+  googleCloudBuild:
+    projectId: ticketingdev-399314
+  artifacts:
+    - image: asia.gcr.io/ticketingdev-399314/auth
+      context: auth #folder where images are
+      docker:
+        dockerfile: Dockerfile #your dockerfile uhta is dir se
+      sync:
+        manual:
+          - src: 'src/**/*.ts' #sync mean to watch all our files inside src as mentioned
+            dest: . # . means w here to sync this file to inside of our running container here it means just to ./

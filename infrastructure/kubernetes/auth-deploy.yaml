@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth # name of your container no lena dena to upar wala
+          # image: sarthakm96/auth for local
+          image: asia.gcr.io/ticketingdev-399314/auth #for gcloud
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth # we need to find all pods with name auth
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+# this is by default a cluster ip serive allows communication to any service running inside our cluster
